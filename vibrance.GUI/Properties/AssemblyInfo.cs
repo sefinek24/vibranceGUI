@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 
 // Allgemeine Informationen über eine Assembly werden über die folgenden 
 // Attribute gesteuert. Ändern Sie diese Attributwerte, um die Informationen zu ändern,
 // die mit einer Assembly verknüpft sind.
-[assembly: AssemblyTitle("vibranceGUI")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("vibranceGUI [improved by Sefinek]")]
+[assembly: AssemblyDescription("Improved version by Sefinek.")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("juvlarN")]
 [assembly: AssemblyProduct("vibrance.GUI")]
@@ -31,5 +32,6 @@ using System.Runtime.InteropServices;
 // Sie können alle Werte angeben oder die standardmäßigen Build- und Revisionsnummern 
 // übernehmen, indem Sie "*" eingeben:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.3.1.1")]
-[assembly: AssemblyFileVersion("2.3.1.1")]
+[assembly: AssemblyVersion("2.3.2.0")]
+[assembly: AssemblyFileVersion("2.3.2.0")]
+[assembly: NeutralResourcesLanguage("en")]

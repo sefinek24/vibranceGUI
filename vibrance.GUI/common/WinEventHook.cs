@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -43,7 +43,7 @@ namespace vibrance.GUI.common
                 var result = UnhookWinEvent(_winEventHookHandle);
                 if (!result) VibranceGUI.Log(new Exception("UnhookWinEvent(winEventHookHandle) failed. winEventHookHandle = " + _winEventHookHandle));
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 VibranceGUI.Log(new Exception("UnhookWinEvent(winEventHookHandle) failed."));
             }

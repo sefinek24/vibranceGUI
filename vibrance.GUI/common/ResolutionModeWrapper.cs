@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace vibrance.GUI.common
 {
@@ -48,6 +48,25 @@ namespace vibrance.GUI.common
             }
 
             return false;
+        }
+
+        protected bool Equals(ResolutionModeWrapper other)
+        {
+            return DmPelsWidth == other.DmPelsWidth && DmPelsHeight == other.DmPelsHeight && DmBitsPerPel == other.DmBitsPerPel && DmDisplayFrequency == other.DmDisplayFrequency &&
+                   DmDisplayFixedOutput == other.DmDisplayFixedOutput;
+        }
+
+        public override int GetHashCode()
+        {
+            unchecked
+            {
+                var hashCode = (int)DmPelsWidth;
+                hashCode = (hashCode * 397) ^ (int)DmPelsHeight;
+                hashCode = (hashCode * 397) ^ (int)DmBitsPerPel;
+                hashCode = (hashCode * 397) ^ (int)DmDisplayFrequency;
+                hashCode = (hashCode * 397) ^ (int)DmDisplayFixedOutput;
+                return hashCode;
+            }
         }
     }
 }
