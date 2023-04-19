@@ -112,7 +112,9 @@
             // 
             // checkBoxAutostart
             // 
+            this.checkBoxAutostart.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.checkBoxAutostart.AutoSize = true;
+            this.checkBoxAutostart.ForeColor = System.Drawing.Color.White;
             this.checkBoxAutostart.Location = new System.Drawing.Point(6, 19);
             this.checkBoxAutostart.Name = "checkBoxAutostart";
             this.checkBoxAutostart.Size = new System.Drawing.Size(131, 17);
@@ -128,6 +130,7 @@
             this.groupBox1.Controls.Add(this.checkBoxPrimaryMonitorOnly);
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.checkBoxAutostart);
+            this.groupBox1.ForeColor = System.Drawing.Color.White;
             this.groupBox1.Location = new System.Drawing.Point(12, 184);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(395, 146);
@@ -137,7 +140,9 @@
             // 
             // checkBoxNeverChangeResolutions
             // 
+            this.checkBoxNeverChangeResolutions.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.checkBoxNeverChangeResolutions.AutoSize = true;
+            this.checkBoxNeverChangeResolutions.ForeColor = System.Drawing.Color.White;
             this.checkBoxNeverChangeResolutions.Location = new System.Drawing.Point(163, 42);
             this.checkBoxNeverChangeResolutions.Name = "checkBoxNeverChangeResolutions";
             this.checkBoxNeverChangeResolutions.Size = new System.Drawing.Size(147, 17);
@@ -150,7 +155,9 @@
             // 
             // checkBoxPrimaryMonitorOnly
             // 
+            this.checkBoxPrimaryMonitorOnly.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.checkBoxPrimaryMonitorOnly.AutoSize = true;
+            this.checkBoxPrimaryMonitorOnly.ForeColor = System.Drawing.Color.White;
             this.checkBoxPrimaryMonitorOnly.Location = new System.Drawing.Point(6, 42);
             this.checkBoxPrimaryMonitorOnly.Name = "checkBoxPrimaryMonitorOnly";
             this.checkBoxPrimaryMonitorOnly.Size = new System.Drawing.Size(151, 17);
@@ -163,14 +170,16 @@
             // 
             // groupBox3
             // 
+            this.groupBox3.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.groupBox3.Controls.Add(this.labelWindowsLevel);
             this.groupBox3.Controls.Add(this.trackBarWindowsLevel);
+            this.groupBox3.ForeColor = System.Drawing.Color.White;
             this.groupBox3.Location = new System.Drawing.Point(6, 68);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(383, 72);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Windows Vibrance Level";
+            this.groupBox3.Text = "Windows vibrance level";
             // 
             // labelWindowsLevel
             // 
@@ -185,7 +194,7 @@
             this.trackBarWindowsLevel.Location = new System.Drawing.Point(6, 22);
             this.trackBarWindowsLevel.Maximum = 63;
             this.trackBarWindowsLevel.Name = "trackBarWindowsLevel";
-            this.trackBarWindowsLevel.Size = new System.Drawing.Size(368, 45);
+            this.trackBarWindowsLevel.Size = new System.Drawing.Size(371, 45);
             this.trackBarWindowsLevel.TabIndex = 0;
             this.trackBarWindowsLevel.Scroll += new System.EventHandler(this.trackBarWindowsLevel_Scroll);
             // 
@@ -193,7 +202,8 @@
             // 
             this.statusLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(119, 521);
+            this.statusLabel.ForeColor = System.Drawing.Color.White;
+            this.statusLabel.Location = new System.Drawing.Point(122, 518);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(61, 13);
             this.statusLabel.TabIndex = 14;
@@ -204,7 +214,8 @@
             this.observerStatusLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.observerStatusLabel.AutoSize = true;
             this.observerStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.observerStatusLabel.Location = new System.Drawing.Point(9, 521);
+            this.observerStatusLabel.ForeColor = System.Drawing.Color.White;
+            this.observerStatusLabel.Location = new System.Drawing.Point(12, 518);
             this.observerStatusLabel.Name = "observerStatusLabel";
             this.observerStatusLabel.Size = new System.Drawing.Size(104, 13);
             this.observerStatusLabel.TabIndex = 13;
@@ -214,6 +225,7 @@
             // 
             this.labelTwitter.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelTwitter.AutoSize = true;
+            this.labelTwitter.ForeColor = System.Drawing.Color.White;
             this.labelTwitter.Location = new System.Drawing.Point(9, 11);
             this.labelTwitter.Name = "labelTwitter";
             this.labelTwitter.Size = new System.Drawing.Size(192, 13);
@@ -224,6 +236,7 @@
             // 
             this.linkLabelTwitter.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.linkLabelTwitter.AutoSize = true;
+            this.linkLabelTwitter.LinkColor = System.Drawing.Color.DeepSkyBlue;
             this.linkLabelTwitter.Location = new System.Drawing.Point(208, 11);
             this.linkLabelTwitter.Name = "linkLabelTwitter";
             this.linkLabelTwitter.Size = new System.Drawing.Size(132, 13);
@@ -243,7 +256,7 @@
             this.buttonPaypal.BackColor = System.Drawing.Color.Transparent;
             this.buttonPaypal.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.buttonPaypal.Image = ((System.Drawing.Image)(resources.GetObject("buttonPaypal.Image")));
-            this.buttonPaypal.Location = new System.Drawing.Point(211, 27);
+            this.buttonPaypal.Location = new System.Drawing.Point(211, 31);
             this.buttonPaypal.Name = "buttonPaypal";
             this.buttonPaypal.Size = new System.Drawing.Size(80, 48);
             this.buttonPaypal.TabIndex = 16;
@@ -255,7 +268,8 @@
             // 
             this.labelPaypal.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelPaypal.AutoSize = true;
-            this.labelPaypal.Location = new System.Drawing.Point(9, 30);
+            this.labelPaypal.ForeColor = System.Drawing.Color.White;
+            this.labelPaypal.Location = new System.Drawing.Point(9, 34);
             this.labelPaypal.Name = "labelPaypal";
             this.labelPaypal.Size = new System.Drawing.Size(183, 13);
             this.labelPaypal.TabIndex = 17;
@@ -275,15 +289,18 @@
             this.groupBox5.Controls.Add(this.buttonRemoveProgram);
             this.groupBox5.Controls.Add(this.listApplications);
             this.groupBox5.Controls.Add(this.buttonAddProgram);
+            this.groupBox5.ForeColor = System.Drawing.Color.White;
             this.groupBox5.Location = new System.Drawing.Point(12, 336);
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.Size = new System.Drawing.Size(395, 172);
             this.groupBox5.TabIndex = 18;
             this.groupBox5.TabStop = false;
-            this.groupBox5.Text = "Program Settings";
+            this.groupBox5.Text = "Programs";
             // 
             // buttonProcessExplorer
             // 
+            this.buttonProcessExplorer.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonProcessExplorer.ForeColor = System.Drawing.Color.Black;
             this.buttonProcessExplorer.Location = new System.Drawing.Point(6, 20);
             this.buttonProcessExplorer.Name = "buttonProcessExplorer";
             this.buttonProcessExplorer.Size = new System.Drawing.Size(94, 23);
@@ -294,6 +311,8 @@
             // 
             // buttonRemoveProgram
             // 
+            this.buttonRemoveProgram.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonRemoveProgram.ForeColor = System.Drawing.Color.Black;
             this.buttonRemoveProgram.Location = new System.Drawing.Point(295, 19);
             this.buttonRemoveProgram.Name = "buttonRemoveProgram";
             this.buttonRemoveProgram.Size = new System.Drawing.Size(94, 23);
@@ -304,6 +323,9 @@
             // 
             // listApplications
             // 
+            this.listApplications.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.listApplications.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(43)))), ((int)(((byte)(45)))), ((int)(((byte)(49)))));
+            this.listApplications.ForeColor = System.Drawing.Color.WhiteSmoke;
             this.listApplications.HideSelection = false;
             this.listApplications.Location = new System.Drawing.Point(6, 49);
             this.listApplications.Name = "listApplications";
@@ -314,6 +336,8 @@
             // 
             // buttonAddProgram
             // 
+            this.buttonAddProgram.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.buttonAddProgram.ForeColor = System.Drawing.Color.Black;
             this.buttonAddProgram.Location = new System.Drawing.Point(151, 20);
             this.buttonAddProgram.Name = "buttonAddProgram";
             this.buttonAddProgram.Size = new System.Drawing.Size(94, 23);
@@ -326,7 +350,8 @@
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(9, 81);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(9, 85);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(166, 26);
             this.label1.TabIndex = 19;
@@ -336,7 +361,8 @@
             // 
             this.linkLabel1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.linkLabel1.AutoSize = true;
-            this.linkLabel1.Location = new System.Drawing.Point(208, 81);
+            this.linkLabel1.LinkColor = System.Drawing.Color.DeepSkyBlue;
+            this.linkLabel1.Location = new System.Drawing.Point(208, 85);
             this.linkLabel1.Name = "linkLabel1";
             this.linkLabel1.Size = new System.Drawing.Size(95, 13);
             this.linkLabel1.TabIndex = 20;
@@ -348,18 +374,20 @@
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(12, 125);
+            this.label2.ForeColor = System.Drawing.Color.White;
+            this.label2.Location = new System.Drawing.Point(12, 126);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(395, 21);
             this.label2.TabIndex = 21;
-            this.label2.Text = "You can find the latest versions on GitHub:";
+            this.label2.Text = "You can find the latest versions on GitHub.";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // linkLabel2
             // 
             this.linkLabel2.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.linkLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.linkLabel2.Location = new System.Drawing.Point(12, 145);
+            this.linkLabel2.LinkColor = System.Drawing.Color.DeepSkyBlue;
+            this.linkLabel2.Location = new System.Drawing.Point(12, 146);
             this.linkLabel2.Name = "linkLabel2";
             this.linkLabel2.Size = new System.Drawing.Size(395, 21);
             this.linkLabel2.TabIndex = 22;
@@ -372,6 +400,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(30)))), ((int)(((byte)(31)))), ((int)(((byte)(34)))));
             this.ClientSize = new System.Drawing.Size(419, 543);
             this.Controls.Add(this.linkLabel2);
             this.Controls.Add(this.label2);
@@ -389,6 +418,7 @@
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "VibranceGUI";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "vibranceGUI";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
