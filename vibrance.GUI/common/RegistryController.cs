@@ -3,16 +3,11 @@ using Microsoft.Win32;
 
 namespace vibrance.GUI.common
 {
-    class RegistryController : IRegistryController
+    internal class RegistryController : IRegistryController
     {
         private const string RunKey = "SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run";
 
         private RegistryKey _startupKey;
-
-        public RegistryController()
-        {
-
-        }
 
         public bool RegisterProgram(string appName, string pathToExe)
         {
@@ -31,6 +26,7 @@ namespace vibrance.GUI.common
             {
                 _startupKey.Close();
             }
+
             return true;
         }
 
@@ -49,6 +45,7 @@ namespace vibrance.GUI.common
             {
                 _startupKey.Close();
             }
+
             return true;
         }
 
@@ -64,6 +61,7 @@ namespace vibrance.GUI.common
             {
                 return false;
             }
+
             return false;
         }
 
@@ -72,16 +70,10 @@ namespace vibrance.GUI.common
             try
             {
                 _startupKey = Registry.CurrentUser.OpenSubKey(RunKey);
-                if (_startupKey == null)
-                {
-                    return false;
-                }
+                if (_startupKey == null) return false;
 
-                string startUpValue = _startupKey.GetValue(appName).ToString();
-                if (startUpValue == pathToExe)
-                {
-                    return true;
-                }
+                var startUpValue = _startupKey.GetValue(appName).ToString();
+                if (startUpValue == pathToExe) return true;
                 return false;
             }
             catch (Exception)

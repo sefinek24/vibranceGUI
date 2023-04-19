@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace vibrance.GUI.common
@@ -12,7 +11,7 @@ namespace vibrance.GUI.common
         public int defaultHandle;
         public int userVibranceSettingDefault;
         public int userVibranceSettingActive;
-        public String szGpuName;
+        public string szGpuName;
         public bool shouldRun;
         public int sleepInterval;
         public List<int> displayHandles;

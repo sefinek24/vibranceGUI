@@ -55,6 +55,10 @@
             this.buttonRemoveProgram = new System.Windows.Forms.Button();
             this.listApplications = new System.Windows.Forms.ListView();
             this.buttonAddProgram = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.linkLabel2 = new System.Windows.Forms.LinkLabel();
             this.contextMenuStrip.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -119,13 +123,14 @@
             // 
             // groupBox1
             // 
+            this.groupBox1.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.groupBox1.Controls.Add(this.checkBoxNeverChangeResolutions);
             this.groupBox1.Controls.Add(this.checkBoxPrimaryMonitorOnly);
             this.groupBox1.Controls.Add(this.groupBox3);
             this.groupBox1.Controls.Add(this.checkBoxAutostart);
-            this.groupBox1.Location = new System.Drawing.Point(13, 82);
+            this.groupBox1.Location = new System.Drawing.Point(12, 184);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(397, 143);
+            this.groupBox1.Size = new System.Drawing.Size(395, 146);
             this.groupBox1.TabIndex = 15;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Settings";
@@ -160,9 +165,9 @@
             // 
             this.groupBox3.Controls.Add(this.labelWindowsLevel);
             this.groupBox3.Controls.Add(this.trackBarWindowsLevel);
-            this.groupBox3.Location = new System.Drawing.Point(7, 65);
+            this.groupBox3.Location = new System.Drawing.Point(6, 68);
             this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(182, 72);
+            this.groupBox3.Size = new System.Drawing.Size(383, 72);
             this.groupBox3.TabIndex = 12;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Windows Vibrance Level";
@@ -177,17 +182,18 @@
             // 
             // trackBarWindowsLevel
             // 
-            this.trackBarWindowsLevel.Location = new System.Drawing.Point(15, 22);
+            this.trackBarWindowsLevel.Location = new System.Drawing.Point(6, 22);
             this.trackBarWindowsLevel.Maximum = 63;
             this.trackBarWindowsLevel.Name = "trackBarWindowsLevel";
-            this.trackBarWindowsLevel.Size = new System.Drawing.Size(131, 45);
+            this.trackBarWindowsLevel.Size = new System.Drawing.Size(368, 45);
             this.trackBarWindowsLevel.TabIndex = 0;
             this.trackBarWindowsLevel.Scroll += new System.EventHandler(this.trackBarWindowsLevel_Scroll);
             // 
             // statusLabel
             // 
+            this.statusLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.statusLabel.AutoSize = true;
-            this.statusLabel.Location = new System.Drawing.Point(106, 502);
+            this.statusLabel.Location = new System.Drawing.Point(119, 521);
             this.statusLabel.Name = "statusLabel";
             this.statusLabel.Size = new System.Drawing.Size(61, 13);
             this.statusLabel.TabIndex = 14;
@@ -195,17 +201,20 @@
             // 
             // observerStatusLabel
             // 
+            this.observerStatusLabel.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.observerStatusLabel.AutoSize = true;
-            this.observerStatusLabel.Location = new System.Drawing.Point(12, 502);
+            this.observerStatusLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.observerStatusLabel.Location = new System.Drawing.Point(9, 521);
             this.observerStatusLabel.Name = "observerStatusLabel";
-            this.observerStatusLabel.Size = new System.Drawing.Size(87, 13);
+            this.observerStatusLabel.Size = new System.Drawing.Size(104, 13);
             this.observerStatusLabel.TabIndex = 13;
             this.observerStatusLabel.Text = "Observer status: ";
             // 
             // labelTwitter
             // 
+            this.labelTwitter.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelTwitter.AutoSize = true;
-            this.labelTwitter.Location = new System.Drawing.Point(10, 11);
+            this.labelTwitter.Location = new System.Drawing.Point(9, 11);
             this.labelTwitter.Name = "labelTwitter";
             this.labelTwitter.Size = new System.Drawing.Size(192, 13);
             this.labelTwitter.TabIndex = 11;
@@ -213,6 +222,7 @@
             // 
             // linkLabelTwitter
             // 
+            this.linkLabelTwitter.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.linkLabelTwitter.AutoSize = true;
             this.linkLabelTwitter.Location = new System.Drawing.Point(208, 11);
             this.linkLabelTwitter.Name = "linkLabelTwitter";
@@ -231,10 +241,11 @@
             // 
             this.buttonPaypal.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.buttonPaypal.BackColor = System.Drawing.Color.Transparent;
+            this.buttonPaypal.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
             this.buttonPaypal.Image = ((System.Drawing.Image)(resources.GetObject("buttonPaypal.Image")));
-            this.buttonPaypal.Location = new System.Drawing.Point(211, 28);
+            this.buttonPaypal.Location = new System.Drawing.Point(211, 27);
             this.buttonPaypal.Name = "buttonPaypal";
-            this.buttonPaypal.Size = new System.Drawing.Size(90, 55);
+            this.buttonPaypal.Size = new System.Drawing.Size(80, 48);
             this.buttonPaypal.TabIndex = 16;
             this.toolTip.SetToolTip(this.buttonPaypal, "Click here to donate to vibranceGUI through Paypal");
             this.buttonPaypal.UseVisualStyleBackColor = false;
@@ -242,8 +253,9 @@
             // 
             // labelPaypal
             // 
+            this.labelPaypal.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.labelPaypal.AutoSize = true;
-            this.labelPaypal.Location = new System.Drawing.Point(10, 48);
+            this.labelPaypal.Location = new System.Drawing.Point(9, 30);
             this.labelPaypal.Name = "labelPaypal";
             this.labelPaypal.Size = new System.Drawing.Size(183, 13);
             this.labelPaypal.TabIndex = 17;
@@ -258,22 +270,23 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Anchor = System.Windows.Forms.AnchorStyles.None;
             this.groupBox5.Controls.Add(this.buttonProcessExplorer);
             this.groupBox5.Controls.Add(this.buttonRemoveProgram);
             this.groupBox5.Controls.Add(this.listApplications);
             this.groupBox5.Controls.Add(this.buttonAddProgram);
-            this.groupBox5.Location = new System.Drawing.Point(13, 231);
+            this.groupBox5.Location = new System.Drawing.Point(12, 336);
             this.groupBox5.Name = "groupBox5";
-            this.groupBox5.Size = new System.Drawing.Size(397, 227);
+            this.groupBox5.Size = new System.Drawing.Size(395, 172);
             this.groupBox5.TabIndex = 18;
             this.groupBox5.TabStop = false;
             this.groupBox5.Text = "Program Settings";
             // 
             // buttonProcessExplorer
             // 
-            this.buttonProcessExplorer.Location = new System.Drawing.Point(7, 20);
+            this.buttonProcessExplorer.Location = new System.Drawing.Point(6, 20);
             this.buttonProcessExplorer.Name = "buttonProcessExplorer";
-            this.buttonProcessExplorer.Size = new System.Drawing.Size(75, 23);
+            this.buttonProcessExplorer.Size = new System.Drawing.Size(94, 23);
             this.buttonProcessExplorer.TabIndex = 3;
             this.buttonProcessExplorer.Text = "Add";
             this.buttonProcessExplorer.UseVisualStyleBackColor = true;
@@ -281,9 +294,9 @@
             // 
             // buttonRemoveProgram
             // 
-            this.buttonRemoveProgram.Location = new System.Drawing.Point(186, 20);
+            this.buttonRemoveProgram.Location = new System.Drawing.Point(295, 19);
             this.buttonRemoveProgram.Name = "buttonRemoveProgram";
-            this.buttonRemoveProgram.Size = new System.Drawing.Size(75, 23);
+            this.buttonRemoveProgram.Size = new System.Drawing.Size(94, 23);
             this.buttonRemoveProgram.TabIndex = 2;
             this.buttonRemoveProgram.Text = "Remove";
             this.buttonRemoveProgram.UseVisualStyleBackColor = true;
@@ -291,28 +304,79 @@
             // 
             // listApplications
             // 
-            this.listApplications.Location = new System.Drawing.Point(7, 49);
+            this.listApplications.HideSelection = false;
+            this.listApplications.Location = new System.Drawing.Point(6, 49);
             this.listApplications.Name = "listApplications";
-            this.listApplications.Size = new System.Drawing.Size(384, 172);
+            this.listApplications.Size = new System.Drawing.Size(383, 117);
             this.listApplications.TabIndex = 1;
             this.listApplications.UseCompatibleStateImageBehavior = false;
             this.listApplications.DoubleClick += new System.EventHandler(this.listApplications_DoubleClick);
             // 
             // buttonAddProgram
             // 
-            this.buttonAddProgram.Location = new System.Drawing.Point(88, 20);
+            this.buttonAddProgram.Location = new System.Drawing.Point(151, 20);
             this.buttonAddProgram.Name = "buttonAddProgram";
-            this.buttonAddProgram.Size = new System.Drawing.Size(92, 23);
+            this.buttonAddProgram.Size = new System.Drawing.Size(94, 23);
             this.buttonAddProgram.TabIndex = 0;
             this.buttonAddProgram.Text = "Add manually";
             this.buttonAddProgram.UseVisualStyleBackColor = true;
             this.buttonAddProgram.Click += new System.EventHandler(this.buttonAddProgram_Click);
             // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(9, 81);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(166, 26);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "Improved version by Sefinek.\r\nPoprawiona wersja przez Sefinek.";
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.linkLabel1.AutoSize = true;
+            this.linkLabel1.Location = new System.Drawing.Point(208, 81);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(95, 13);
+            this.linkLabel1.TabIndex = 20;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "https://sefinek.net";
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelSefinek_LinkClicked);
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(12, 125);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(395, 21);
+            this.label2.TabIndex = 21;
+            this.label2.Text = "You can find the latest versions on GitHub:";
+            this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // linkLabel2
+            // 
+            this.linkLabel2.Anchor = System.Windows.Forms.AnchorStyles.None;
+            this.linkLabel2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.linkLabel2.Location = new System.Drawing.Point(12, 145);
+            this.linkLabel2.Name = "linkLabel2";
+            this.linkLabel2.Size = new System.Drawing.Size(395, 21);
+            this.linkLabel2.TabIndex = 22;
+            this.linkLabel2.TabStop = true;
+            this.linkLabel2.Text = "https://github.com/sefinek24/vibranceGUI";
+            this.linkLabel2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.linkLabel2.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabelGitHub_LinkClicked);
+            // 
             // VibranceGUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(419, 524);
+            this.ClientSize = new System.Drawing.Size(419, 543);
+            this.Controls.Add(this.linkLabel2);
+            this.Controls.Add(this.label2);
+            this.Controls.Add(this.linkLabel1);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.groupBox5);
             this.Controls.Add(this.labelPaypal);
             this.Controls.Add(this.buttonPaypal);
@@ -369,6 +433,10 @@
         private System.Windows.Forms.Button buttonAddProgram;
         private System.Windows.Forms.Button buttonProcessExplorer;
         private System.Windows.Forms.CheckBox checkBoxNeverChangeResolutions;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.LinkLabel linkLabel1;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.LinkLabel linkLabel2;
     }
 }
 

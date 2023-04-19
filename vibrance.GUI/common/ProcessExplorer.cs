@@ -1,24 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Management;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
-using vibrance.GUI.AMD;
-using vibrance.GUI.NVIDIA;
 
 namespace vibrance.GUI.common
 {
     public partial class ProcessExplorer : Form
     {
-
-        Form vibranceGui;
+        private readonly Form vibranceGui;
 
         public ProcessExplorer(Form vibranceGui)
         {
@@ -40,17 +33,15 @@ namespace vibrance.GUI.common
         private void GetAllProcesses()
         {
             var activeProcceses = Process.GetProcesses();
-            int activeApplicationCount = 0;
-            foreach (Process process in activeProcceses)
-            {
+            var activeApplicationCount = 0;
+            foreach (var process in activeProcceses)
                 if (process.MainWindowHandle != IntPtr.Zero && process.Id != Process.GetCurrentProcess().Id)
-                {
                     try
                     {
-                        string path = GetPathFromProcessId(process);
+                        var path = GetPathFromProcessId(process);
                         if (path != string.Empty && File.Exists(path))
                         {
-                            ProcessExplorerEntry processEntry = new ProcessExplorerEntry(path, Icon.ExtractAssociatedIcon(path), process);
+                            var processEntry = new ProcessExplorerEntry(path, Icon.ExtractAssociatedIcon(path), process);
                             backgroundWorker.ReportProgress(++activeApplicationCount, processEntry);
                         }
                     }
@@ -58,25 +49,21 @@ namespace vibrance.GUI.common
                     {
                         VibranceGUI.Log(ex);
                     }
-                }
-            }
         }
 
         [DllImport("psapi.dll")]
-        static extern uint GetModuleFileNameEx(IntPtr hProcess, IntPtr hModule, [Out] StringBuilder lpBaseName, [In] [MarshalAs(UnmanagedType.U4)] int nSize);
+        private static extern uint GetModuleFileNameEx(IntPtr hProcess, IntPtr hModule, [Out] StringBuilder lpBaseName, [In] [MarshalAs(UnmanagedType.U4)] int nSize);
+
         /// <summary>
-        /// Safely gets the executable path from the specified process.
-        /// Process.MainModule.FileName crashes when called on a x64 process because vibranceGUI is running as x86 process.
+        ///     Safely gets the executable path from the specified process.
+        ///     Process.MainModule.FileName crashes when called on a x64 process because vibranceGUI is running as x86 process.
         /// </summary>
         /// <param name="process">the process to read out the executable path of</param>
         /// <returns>the fully qualified executable path</returns>
         private string GetPathFromProcessId(Process process)
         {
             var sb = new StringBuilder(1024);
-            if (GetModuleFileNameEx(process.Handle, IntPtr.Zero, sb, sb.Capacity) > 0)
-            {
-                return sb.ToString();
-            }
+            if (GetModuleFileNameEx(process.Handle, IntPtr.Zero, sb, sb.Capacity) > 0) return sb.ToString();
             return string.Empty;
         }
 
@@ -84,14 +71,11 @@ namespace vibrance.GUI.common
         {
             if (listView.SelectedItems.Count == 1)
             {
-                ProcessExplorerEntry processExplorerEntry = (ProcessExplorerEntry)listView.SelectedItems[0].Tag;
-                if (processExplorerEntry == null)
-                {
-                    return;
-                }
-                this.Hide();
+                var processExplorerEntry = (ProcessExplorerEntry)listView.SelectedItems[0].Tag;
+                if (processExplorerEntry == null) return;
+                Hide();
                 ((VibranceGUI)vibranceGui).AddProgramExtern(processExplorerEntry);
-                this.Close();
+                Close();
             }
         }
 
@@ -111,11 +95,8 @@ namespace vibrance.GUI.common
 
         private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
-            if(!(e.UserState is ProcessExplorerEntry))
-            {
-                return;
-            }
-            ProcessExplorerEntry processEntry = (ProcessExplorerEntry)e.UserState;
+            if (!(e.UserState is ProcessExplorerEntry)) return;
+            var processEntry = (ProcessExplorerEntry)e.UserState;
             iconList.Images.Add(processEntry.Icon);
             var listItem = new ListViewItem(processEntry.ProcessName, iconList.Images.Count - 1);
             listItem.Tag = processEntry;

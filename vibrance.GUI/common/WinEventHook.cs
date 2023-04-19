@@ -1,39 +1,104 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Media;
 using System.Runtime.InteropServices;
 using System.Text;
-using System.Windows.Forms;
-using vibrance.GUI.AMD;
-using vibrance.GUI.NVIDIA;
 
 namespace vibrance.GUI.common
 {
-    class WinEventHook
+    internal class WinEventHook
     {
+        private static WinEventHook _instance;
+
+        private readonly IntPtr _winEventHookHandle;
+        private readonly WinEventDelegate _procDelegate = WinEventProc;
+
+        private WinEventHook()
+        {
+            _winEventHookHandle = SetWinEventHook(WinEvent.EventSystemForeground, WinEvent.EventSystemForeground, IntPtr.Zero, _procDelegate, 0, 0, WinEvent.WineventOutofcontext);
+        }
 
         [DllImport("user32.dll")]
-        static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr
-           hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess,
-           uint idThread, uint dwFlags);
+        private static extern IntPtr SetWinEventHook(uint eventMin, uint eventMax, IntPtr
+                hmodWinEventProc, WinEventDelegate lpfnWinEventProc, uint idProcess,
+            uint idThread, uint dwFlags);
 
         [DllImport("user32.dll")]
-        static extern bool UnhookWinEvent(IntPtr hWinEventHook);
+        private static extern bool UnhookWinEvent(IntPtr hWinEventHook);
 
         [DllImport("user32.dll", CharSet = CharSet.Ansi)]
-        static extern int GetWindowTextLength([In] IntPtr hWnd);
+        private static extern int GetWindowTextLength([In] IntPtr hWnd);
 
         [DllImport("user32.dll", CharSet = CharSet.Ansi)]
-        static extern int GetWindowTextA([In] IntPtr hWnd, [In, Out] StringBuilder lpString, [In] int nMaxCount);
+        private static extern int GetWindowTextA([In] IntPtr hWnd, [In] [Out] StringBuilder lpString, [In] int nMaxCount);
 
         [DllImport("user32.dll", SetLastError = true)]
-        static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint processId);
+
+        public event EventHandler<WinEventHookEventArgs> WinEventHookHandler;
+
+        public void RemoveWinEventHook()
+        {
+            try
+            {
+                var result = UnhookWinEvent(_winEventHookHandle);
+                if (!result) VibranceGUI.Log(new Exception("UnhookWinEvent(winEventHookHandle) failed. winEventHookHandle = " + _winEventHookHandle));
+            }
+            catch (Exception ex)
+            {
+                VibranceGUI.Log(new Exception("UnhookWinEvent(winEventHookHandle) failed."));
+            }
+        }
+
+        public static WinEventHook GetInstance()
+        {
+            if (_instance == null)
+                _instance = new WinEventHook();
+            return _instance;
+        }
+
+        private static void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
+        {
+            uint processId;
+            GetWindowThreadProcessId(hwnd, out processId);
+            var windowTextLength = GetWindowTextLength(hwnd);
+            var sb = new StringBuilder(windowTextLength + 1);
+            GetWindowTextA(hwnd, sb, sb.Capacity);
+
+            try
+            {
+                using (var p = Process.GetProcessById((int)processId))
+                {
+                    var e = new WinEventHookEventArgs
+                    {
+                        Handle = hwnd,
+                        ProcessId = processId,
+                        MainWindowTitle = p.MainWindowTitle,
+                        ProcessName = p.ProcessName,
+                        WindowText = sb.ToString()
+                    };
+                    GetInstance().DispatchWinEventHookEvent(e);
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                // The process property is not defined because the process has exited or it does not have an identifier.
+            }
+            catch (ArgumentException)
+            {
+                // The process specified by the processId parameter is not running.
+            }
+        }
+
+        protected virtual void DispatchWinEventHookEvent(WinEventHookEventArgs e)
+        {
+            var handler = WinEventHookHandler;
+            if (handler != null) handler(this, e);
+        }
 
         private delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);
 
         private struct WinEvent
         {
-
             public const uint WineventOutofcontext = 0x0000; // Events are ASYNC
 
             public const uint WineventSkipownthread = 0x0001; // Don't call back for events on installer's thread
@@ -175,87 +240,6 @@ namespace vibrance.GUI.common
             public const uint EventAiaStart = 0xA000;
 
             public const uint EventAiaEnd = 0xAFFF;
-        }
-
-
-        private static WinEventHook _instance;
-        public event EventHandler<WinEventHookEventArgs> WinEventHookHandler;
-        WinEventDelegate _procDelegate = new WinEventDelegate(WinEventProc);
-
-        private readonly IntPtr _winEventHookHandle;
-
-        private WinEventHook()
-        {
-            _winEventHookHandle = SetWinEventHook(WinEvent.EventSystemForeground, WinEvent.EventSystemForeground, IntPtr.Zero, _procDelegate, 0, 0, WinEvent.WineventOutofcontext);
-        }
-
-        public void RemoveWinEventHook()
-        {
-            try
-            {
-                bool result = UnhookWinEvent(_winEventHookHandle);
-                if (!result)
-                {
-                    VibranceGUI.Log(new Exception("UnhookWinEvent(winEventHookHandle) failed. winEventHookHandle = " + _winEventHookHandle));
-                }
-            }
-            catch (Exception ex)
-            {
-                VibranceGUI.Log(new Exception("UnhookWinEvent(winEventHookHandle) failed."));
-            }
-            finally
-            {
-
-            }
-        }
-
-        public static WinEventHook GetInstance()
-        {
-            if (_instance == null)
-                _instance = new WinEventHook();
-            return _instance;
-        }
-
-        static void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
-        {
-            uint processId;
-            GetWindowThreadProcessId(hwnd, out processId);
-            int windowTextLength = GetWindowTextLength(hwnd);
-            StringBuilder sb = new StringBuilder(windowTextLength + 1);
-            GetWindowTextA(hwnd, sb, sb.Capacity);
-
-            try
-            {
-                using (Process p = Process.GetProcessById((int)processId))
-                {
-                    WinEventHookEventArgs e = new WinEventHookEventArgs
-                    {
-                        Handle = hwnd,
-                        ProcessId = processId,
-                        MainWindowTitle = p.MainWindowTitle,
-                        ProcessName = p.ProcessName,
-                        WindowText = sb.ToString()
-                    };
-                    GetInstance().DispatchWinEventHookEvent(e);
-                }
-            }
-            catch (InvalidOperationException)
-            {
-                // The process property is not defined because the process has exited or it does not have an identifier.
-            }
-            catch (ArgumentException)
-            {
-                // The process specified by the processId parameter is not running.
-            }
-        }
-
-        protected virtual void DispatchWinEventHookEvent(WinEventHookEventArgs e)
-        {
-            EventHandler<WinEventHookEventArgs> handler = WinEventHookHandler;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
         }
     }
 }

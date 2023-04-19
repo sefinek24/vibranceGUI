@@ -1,0 +1,70 @@
+# EditorConfig is awesome: https://EditorConfig.org
+
+root = true
+
+# Default settings
+[*]
+end_of_line = lf
+charset = utf-8
+trim_trailing_whitespace = true
+
+# Microsoft .NET properties
+csharp_language_version = 7.3
+csharp_preferred_modifier_order = public, private, protected, internal, static, readonly, volatile, override, abstract, sealed, unsafe, extern
+csharp_preferred_modifier_order_for_events = protected, internal, private, public, static
+csharp_preferred_modifier_order_for_indexers = public, private, protected, internal, static, readonly, volatile, override, abstract, sealed, unsafe, extern
+csharp_preferred_modifier_order_for_methods = public, private, protected, internal, static, readonly, volatile, override, abstract, sealed, unsafe, extern
+csharp_preferred_modifier_order_for_properties = public, private, protected, internal, static, readonly, volatile, override, abstract, sealed, unsafe, extern
+csharp_prefer_static_local_function = true
+csharp_style_prefer_index_operator = true
+csharp_style_prefer_inferred_tuple_names = true
+csharp_style_prefer_simple_default_expression = true
+csharp_style_prefer_switch_expression = true
+csharp_style_var_elsewhere = true
+csharp_style_var_for_built_in_types = true
+csharp_style_var_when_type_is_apparent = true
+dotnet_style_predefined_type_for_locals_parameters_members = true
+dotnet_style_predefined_type_for_member_access = true
+dotnet_style_qualification_for_event = false
+dotnet_style_qualification_for_field = false
+dotnet_style_qualification_for_method = false
+dotnet_style_qualification_for_property = false
+dotnet_style_require_accessibility_modifiers = for_non_interface_members
+
+# ReSharper inspection severities
+resharper_arrange_redundant_parentheses_highlighting = hint
+resharper_arrange_this_qualifier_highlighting = hint
+resharper_arrange_type_member_modifiers_highlighting = hint
+resharper_arrange_type_modifiers_highlighting = hint
+resharper_built_in_type_reference_style_for_member_access_highlighting = hint
+resharper_built_in_type_reference_style_highlighting = hint
+resharper_redundant_base_qualifier_highlighting = warning
+resharper_suggest_var_or_type_built_in_types_highlighting = hint
+resharper_suggest_var_or_type_elsewhere_highlighting = hint
+resharper_suggest_var_or_type_simple_types_highlighting = hint
+
+# Code analysis settings
+[*.cs]
+indent_style = space
+indent_size = 4
+insert_final_newline = true
+max_line_length = 220
+dotnet_diagnostic.ca1062.severity = error
+dotnet_diagnostic.ca1303.severity = error
+dotnet_diagnostic.ca1822.severity = error
+dotnet_diagnostic.ca2007.severity = error
+dotnet_diagnostic.ca2208.severity = error
+dotnet_diagnostic.ca2213.severity = error
+
+# Use spaces rather than tabs and set tab size to 4
+[*]
+indent_size = 4
+tab_width = 4
+max_line_length = 220
+
+# Ensure consistent line endings on all platforms
+[*.{appxmanifest,axml,build,c,c++,cc,cginc,compute,config,cp,cpp,cshtml,csproj,cu,cuh,cxx,dbml,discomap,dtd,fx,fxh,h,hh,hlsl,hlsli,hlslinc,hpp,htm,html,hxx,inc,inl,ino,ipp,ixx,jsproj,lsproj,mpp,mq4,mq5,mqh,njsproj,nuspec,proj,props,razor,resw,resx,StyleCop,targets,tasks,tpp,usf,ush,vbproj,xml,xsd}]
+indent_style = tab
+indent_size = 4
+tab_width = 4
+insert_final_newline = true

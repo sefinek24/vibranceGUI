@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 
 namespace vibrance.GUI.common
 {
-    class ResolutionHelper
+    internal class ResolutionHelper
     {
         private const int EnumCurrentSettings = -1;
 
@@ -18,10 +16,8 @@ namespace vibrance.GUI.common
         [DllImport("User32.dll")]
         [return: MarshalAs(UnmanagedType.I4)]
         private static extern int ChangeDisplaySettings(
-            [In, Out]
-            ref Devmode lpDevMode,
-            [param: MarshalAs(UnmanagedType.U4)]
-            uint dwflags);
+            [In] [Out] ref Devmode lpDevMode,
+            [param: MarshalAs(UnmanagedType.U4)] uint dwflags);
 
         [DllImport("user32.dll")]
         private static extern DispChange ChangeDisplaySettingsEx(
@@ -33,10 +29,10 @@ namespace vibrance.GUI.common
 
         [DllImport("user32.dll")]
         public static extern DispChange ChangeDisplaySettingsEx(
-            string lpszDeviceName, 
-            IntPtr lpDevMode, 
-            IntPtr hwnd, 
-            ChangeDisplaySettingsFlags dwflags, 
+            string lpszDeviceName,
+            IntPtr lpDevMode,
+            IntPtr hwnd,
+            ChangeDisplaySettingsFlags dwflags,
             IntPtr lParam);
 
 
@@ -46,10 +42,7 @@ namespace vibrance.GUI.common
             mode.dmSize = (ushort)Marshal.SizeOf(mode);
             mode.dmDriverExtra = 0;
 
-            if (EnumDisplaySettings(lpszDeviceName, EnumCurrentSettings, ref mode) == true)
-            {
-                return true;
-            }
+            if (EnumDisplaySettings(lpszDeviceName, EnumCurrentSettings, ref mode)) return true;
 
             return false;
         }
@@ -61,22 +54,19 @@ namespace vibrance.GUI.common
 
         public static List<ResolutionModeWrapper> EnumerateSupportedResolutionModes(string deviceName)
         {
-            List<ResolutionModeWrapper> resolutionList = new List<ResolutionModeWrapper>();
-            Devmode mode = new Devmode();
+            var resolutionList = new List<ResolutionModeWrapper>();
+            var mode = new Devmode();
             mode.dmSize = (ushort)Marshal.SizeOf(mode);
 
-            int index = 0;
-            while (EnumDisplaySettings(deviceName, index++, ref mode) == true)
-            {
-                resolutionList.Add(new ResolutionModeWrapper(mode));
-            }
+            var index = 0;
+            while (EnumDisplaySettings(deviceName, index++, ref mode)) resolutionList.Add(new ResolutionModeWrapper(mode));
 
             return resolutionList;
         }
 
         public static bool ChangeResolution(ResolutionModeWrapper resolutionMode)
         {
-            Devmode mode = new Devmode();
+            var mode = new Devmode();
             if (GetCurrentResolutionSettings(out mode, null))
             {
                 mode.dmPelsWidth = resolutionMode.DmPelsWidth;
@@ -85,22 +75,18 @@ namespace vibrance.GUI.common
                 mode.dmDisplayFrequency = resolutionMode.DmDisplayFrequency;
                 mode.dmDisplayFixedOutput = resolutionMode.DmDisplayFixedOutput;
 
-                DispChange returnValue = (DispChange)ChangeDisplaySettings(ref mode, 0);
+                var returnValue = (DispChange)ChangeDisplaySettings(ref mode, 0);
                 if (DispChange.DispChangeSuccessful == returnValue)
-                {
                     return true;
-                }
-                else
-                {
-                    MessageBox.Show("Changing the resolution failed: " + Enum.GetName(typeof(DispChange), returnValue));
-                }
+                MessageBox.Show("Changing the resolution failed: " + Enum.GetName(typeof(DispChange), returnValue));
             }
+
             return false;
         }
 
         public static bool ChangeResolutionEx(ResolutionModeWrapper resolutionMode, string lpszDeviceName)
         {
-            Devmode mode = new Devmode();
+            var mode = new Devmode();
             if (GetCurrentResolutionSettings(out mode, lpszDeviceName))
             {
                 mode.dmPelsWidth = resolutionMode.DmPelsWidth;
@@ -110,23 +96,19 @@ namespace vibrance.GUI.common
                 mode.dmDisplayFixedOutput = resolutionMode.DmDisplayFixedOutput;
 
 
-                DispChange returnValue = (DispChange)ChangeDisplaySettingsEx(lpszDeviceName, ref mode, IntPtr.Zero, (ChangeDisplaySettingsFlags.CdsUpdateregistry | ChangeDisplaySettingsFlags.CdsNoreset), IntPtr.Zero);
+                var returnValue = ChangeDisplaySettingsEx(lpszDeviceName, ref mode, IntPtr.Zero, ChangeDisplaySettingsFlags.CdsUpdateregistry | ChangeDisplaySettingsFlags.CdsNoreset, IntPtr.Zero);
                 ChangeDisplaySettingsEx(null, IntPtr.Zero, (IntPtr)null, ChangeDisplaySettingsFlags.CdsNone, (IntPtr)null);
 
                 if (DispChange.DispChangeSuccessful == returnValue)
-                {
                     return true;
-                }
-                else
-                {
-                    MessageBox.Show("Changing the resolution failed: " + Enum.GetName(typeof(DispChange), returnValue));
-                }
+                MessageBox.Show("Changing the resolution failed: " + Enum.GetName(typeof(DispChange), returnValue));
             }
+
             return false;
         }
     }
 
-    public enum DispChange : int
+    public enum DispChange
     {
         DispChangeSuccessful = 0,
         DispChangeRestart = 1,
@@ -135,9 +117,9 @@ namespace vibrance.GUI.common
         DispChangeNotupdated = -3,
         DispChangeBadflags = -4,
         DispChangeBadparam = -5
-    };
+    }
 
-    public enum Dmdfo : int
+    public enum Dmdfo
     {
         Default = 0,
         Stretch = 1,
@@ -160,43 +142,31 @@ namespace vibrance.GUI.common
         //public Char[] dmDeviceName;
 
         // After the 32-bytes array
-        [MarshalAs(UnmanagedType.U2)]
-        public UInt16 dmSpecVersion;
+        [MarshalAs(UnmanagedType.U2)] public ushort dmSpecVersion;
 
-        [MarshalAs(UnmanagedType.U2)]
-        public UInt16 dmDriverVersion;
+        [MarshalAs(UnmanagedType.U2)] public ushort dmDriverVersion;
 
-        [MarshalAs(UnmanagedType.U2)]
-        public UInt16 dmSize;
+        [MarshalAs(UnmanagedType.U2)] public ushort dmSize;
 
-        [MarshalAs(UnmanagedType.U2)]
-        public UInt16 dmDriverExtra;
+        [MarshalAs(UnmanagedType.U2)] public ushort dmDriverExtra;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmFields;
+        [MarshalAs(UnmanagedType.U4)] public uint dmFields;
 
         public Pointl dmPosition;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmDisplayOrientation;
+        [MarshalAs(UnmanagedType.U4)] public uint dmDisplayOrientation;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmDisplayFixedOutput;
+        [MarshalAs(UnmanagedType.U4)] public uint dmDisplayFixedOutput;
 
-        [MarshalAs(UnmanagedType.I2)]
-        public Int16 dmColor;
+        [MarshalAs(UnmanagedType.I2)] public short dmColor;
 
-        [MarshalAs(UnmanagedType.I2)]
-        public Int16 dmDuplex;
+        [MarshalAs(UnmanagedType.I2)] public short dmDuplex;
 
-        [MarshalAs(UnmanagedType.I2)]
-        public Int16 dmYResolution;
+        [MarshalAs(UnmanagedType.I2)] public short dmYResolution;
 
-        [MarshalAs(UnmanagedType.I2)]
-        public Int16 dmTTOption;
+        [MarshalAs(UnmanagedType.I2)] public short dmTTOption;
 
-        [MarshalAs(UnmanagedType.I2)]
-        public Int16 dmCollate;
+        [MarshalAs(UnmanagedType.I2)] public short dmCollate;
 
         // CCHDEVICENAME = 32 = 0x50
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
@@ -206,59 +176,43 @@ namespace vibrance.GUI.common
         //    SizeConst = 32, ArraySubType = UnmanagedType.U1)]
         //public Byte[] dmFormName;
 
-        [MarshalAs(UnmanagedType.U2)]
-        public UInt16 dmLogPixels;
+        [MarshalAs(UnmanagedType.U2)] public ushort dmLogPixels;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmBitsPerPel;
+        [MarshalAs(UnmanagedType.U4)] public uint dmBitsPerPel;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmPelsWidth;
+        [MarshalAs(UnmanagedType.U4)] public uint dmPelsWidth;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmPelsHeight;
+        [MarshalAs(UnmanagedType.U4)] public uint dmPelsHeight;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmDisplayFlags;
+        [MarshalAs(UnmanagedType.U4)] public uint dmDisplayFlags;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmDisplayFrequency;
+        [MarshalAs(UnmanagedType.U4)] public uint dmDisplayFrequency;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmICMMethod;
+        [MarshalAs(UnmanagedType.U4)] public uint dmICMMethod;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmICMIntent;
+        [MarshalAs(UnmanagedType.U4)] public uint dmICMIntent;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmMediaType;
+        [MarshalAs(UnmanagedType.U4)] public uint dmMediaType;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmDitherType;
+        [MarshalAs(UnmanagedType.U4)] public uint dmDitherType;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmReserved1;
+        [MarshalAs(UnmanagedType.U4)] public uint dmReserved1;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmReserved2;
+        [MarshalAs(UnmanagedType.U4)] public uint dmReserved2;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmPanningWidth;
+        [MarshalAs(UnmanagedType.U4)] public uint dmPanningWidth;
 
-        [MarshalAs(UnmanagedType.U4)]
-        public UInt32 dmPanningHeight;
+        [MarshalAs(UnmanagedType.U4)] public uint dmPanningHeight;
     }
 
     [StructLayout(LayoutKind.Sequential)]
     public struct Pointl
     {
-        [MarshalAs(UnmanagedType.I4)]
-        public int x;
-        [MarshalAs(UnmanagedType.I4)]
-        public int y;
+        [MarshalAs(UnmanagedType.I4)] public int x;
+        [MarshalAs(UnmanagedType.I4)] public int y;
     }
 
-    [Flags()]
+    [Flags]
     public enum ChangeDisplaySettingsFlags : uint
     {
         CdsNone = 0,
@@ -274,5 +228,4 @@ namespace vibrance.GUI.common
         CdsResetEx = 0x20000000,
         CdsNoreset = 0x10000000
     }
-
 }

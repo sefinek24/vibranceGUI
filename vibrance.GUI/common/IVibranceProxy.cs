@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using vibrance.GUI.NVIDIA;
 
 namespace vibrance.GUI.common
 {
     public interface IVibranceProxy
     {
+        GraphicsAdapter GraphicsAdapter { get; }
         void SetApplicationSettings(List<ApplicationSetting> refApplicationSettings);
         void SetShouldRun(bool shouldRun);
         void SetVibranceWindowsLevel(int vibranceWindowsLevel);
@@ -13,7 +13,6 @@ namespace vibrance.GUI.common
         void HandleDvcExit();
         void SetAffectPrimaryMonitorOnly(bool affectPrimaryMonitorOnly);
         VibranceInfo GetVibranceInfo();
-        GraphicsAdapter GraphicsAdapter { get; }
         void SetNeverSwitchResolution(bool neverSwitchResolution);
     }
 }

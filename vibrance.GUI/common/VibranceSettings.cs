@@ -6,32 +6,33 @@ namespace vibrance.GUI.common
 {
     public partial class VibranceSettings : Form
     {
-        private IVibranceProxy _v;
-        private ListViewItem _sender;
         private readonly Func<int, string> _resolveLabelLevel;
+        private readonly ListViewItem _sender;
+        private readonly IVibranceProxy _v;
 
-        public VibranceSettings(IVibranceProxy v, int minValue, int maxValue, int defaultValue, ListViewItem sender, ApplicationSetting setting, List<ResolutionModeWrapper> supportedResolutionList, Func<int, string> resolveLabelLevel)
+        public VibranceSettings(IVibranceProxy v, int minValue, int maxValue, int defaultValue, ListViewItem sender, ApplicationSetting setting, List<ResolutionModeWrapper> supportedResolutionList,
+            Func<int, string> resolveLabelLevel)
         {
             InitializeComponent();
-            this.trackBarIngameLevel.Minimum = minValue;
-            this.trackBarIngameLevel.Maximum = maxValue;
-            this.trackBarIngameLevel.Value = defaultValue;
-            this._sender = sender;
+            trackBarIngameLevel.Minimum = minValue;
+            trackBarIngameLevel.Maximum = maxValue;
+            trackBarIngameLevel.Value = defaultValue;
+            _sender = sender;
             _resolveLabelLevel = resolveLabelLevel;
-            this._v = v;
+            _v = v;
             labelIngameLevel.Text = _resolveLabelLevel(trackBarIngameLevel.Value);
-            this.labelTitle.Text += $@"""{sender.Text}""";
-            this.pictureBox.Image = this._sender.ListView.LargeImageList.Images[this._sender.ImageIndex];
-            this.cBoxResolution.DataSource = supportedResolutionList;
+            labelTitle.Text += $@"""{sender.Text}""";
+            pictureBox.Image = _sender.ListView.LargeImageList.Images[_sender.ImageIndex];
+            cBoxResolution.DataSource = supportedResolutionList;
             // If the setting is new, we don't need to set the progress bar value
             if (setting != null)
             {
                 // Sets the progress bar value to the Ingame Vibrance setting
-                this.trackBarIngameLevel.Value = setting.IngameLevel;
-                this.cBoxResolution.SelectedItem = setting.ResolutionSettings;
-                this.checkBoxResolution.Checked = setting.IsResolutionChangeNeeded;
+                trackBarIngameLevel.Value = setting.IngameLevel;
+                cBoxResolution.SelectedItem = setting.ResolutionSettings;
+                checkBoxResolution.Checked = setting.IsResolutionChangeNeeded;
                 // Necessary to reload the label which tells the percentage
-                trackBarIngameLevel_Scroll(null, null); 
+                trackBarIngameLevel_Scroll(null, null);
             }
         }
 
@@ -43,19 +44,19 @@ namespace vibrance.GUI.common
 
         private void buttonSave_Click(object sender, EventArgs e)
         {
-            this.DialogResult = DialogResult.OK;
-            this.Close();
+            DialogResult = DialogResult.OK;
+            Close();
         }
 
         public ApplicationSetting GetApplicationSetting()
         {
-            return new ApplicationSetting(_sender.Text, _sender.Tag.ToString(), this.trackBarIngameLevel.Value, 
-                (ResolutionModeWrapper)this.cBoxResolution.SelectedItem, this.checkBoxResolution.Checked);
+            return new ApplicationSetting(_sender.Text, _sender.Tag.ToString(), trackBarIngameLevel.Value,
+                (ResolutionModeWrapper)cBoxResolution.SelectedItem, checkBoxResolution.Checked);
         }
 
         private void checkBoxResolution_CheckedChanged(object sender, EventArgs e)
         {
-            this.cBoxResolution.Enabled = this.checkBoxResolution.Checked;
+            cBoxResolution.Enabled = checkBoxResolution.Checked;
         }
     }
 }

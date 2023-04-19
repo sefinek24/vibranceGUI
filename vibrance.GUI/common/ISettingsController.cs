@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using vibrance.GUI.NVIDIA;
 
 namespace vibrance.GUI.common
 {

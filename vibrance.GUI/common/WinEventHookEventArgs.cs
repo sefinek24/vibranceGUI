@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace vibrance.GUI.common
 {
-    class WinEventHookEventArgs : EventArgs
+    internal class WinEventHookEventArgs : EventArgs
     {
         public uint ProcessId { get; set; }
         public Process Process { get; set; }

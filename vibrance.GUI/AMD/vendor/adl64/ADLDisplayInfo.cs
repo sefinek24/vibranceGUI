@@ -1,4 +1,4 @@
-﻿using System.Runtime.InteropServices;
+using System.Runtime.InteropServices;
 
 namespace vibrance.GUI.AMD.vendor.adl64
 {
@@ -7,10 +7,13 @@ namespace vibrance.GUI.AMD.vendor.adl64
     {
         internal AdlDisplayId DisplayID;
         internal int DisplayControllerIndex;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = (int)Adl.AdlMaxPath)]
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Adl.AdlMaxPath)]
         internal string DisplayName;
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = (int)Adl.AdlMaxPath)]
+
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = Adl.AdlMaxPath)]
         internal string DisplayManufacturerName;
+
         internal int DisplayType;
         internal int DisplayOutputType;
         internal int DisplayConnector;

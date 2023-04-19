@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
-using System.Text;
 using System.Windows.Forms;
 using vibrance.GUI.AMD.vendor;
 using vibrance.GUI.common;
@@ -13,12 +12,12 @@ namespace vibrance.GUI.AMD
 {
     public class AmdDynamicVibranceProxy : IVibranceProxy
     {
-        private readonly IAmdAdapter _amdAdapter;
-        private List<ApplicationSetting> _applicationSettings;
-        private readonly Dictionary<string, Tuple<ResolutionModeWrapper, List<ResolutionModeWrapper>>> _windowsResolutionSettings;
-        private VibranceInfo _vibranceInfo;
-        private WinEventHook _hook;
         private static Screen _gameScreen;
+        private readonly IAmdAdapter _amdAdapter;
+        private readonly Dictionary<string, Tuple<ResolutionModeWrapper, List<ResolutionModeWrapper>>> _windowsResolutionSettings;
+        private List<ApplicationSetting> _applicationSettings;
+        private readonly WinEventHook _hook;
+        private VibranceInfo _vibranceInfo;
 
         public AmdDynamicVibranceProxy(IAmdAdapter amdAdapter, List<ApplicationSetting> applicationSettings, Dictionary<string, Tuple<ResolutionModeWrapper, List<ResolutionModeWrapper>>> windowsResolutionSettings)
         {
@@ -40,17 +39,13 @@ namespace vibrance.GUI.AMD
                     _hook = WinEventHook.GetInstance();
                     _hook.WinEventHookHandler += OnWinEventHook;
                 }
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-                DialogResult result = MessageBox.Show(NvidiaDynamicVibranceProxy.NvapiErrorInitFailed, "vibranceGUI Error",
+                var result = MessageBox.Show(NvidiaDynamicVibranceProxy.NvapiErrorInitFailed, "vibranceGUI Error",
                     MessageBoxButtons.OKCancel, MessageBoxIcon.Information);
-                if (result == DialogResult.OK)
-                {
-                    Process.Start(NvidiaDynamicVibranceProxy.GuideLink);
-                }
+                if (result == DialogResult.OK) Process.Start(NvidiaDynamicVibranceProxy.GuideLink);
             }
         }
 
@@ -109,13 +104,13 @@ namespace vibrance.GUI.AMD
         {
             if (_applicationSettings.Count > 0)
             {
-                ApplicationSetting applicationSetting = _applicationSettings.FirstOrDefault(x => string.Equals(x.Name, e.ProcessName, StringComparison.OrdinalIgnoreCase));
+                var applicationSetting = _applicationSettings.FirstOrDefault(x => string.Equals(x.Name, e.ProcessName, StringComparison.OrdinalIgnoreCase));
                 if (applicationSetting != null)
                 {
                     //test if a resolution change is needed
-                    Screen screen = Screen.FromHandle(e.Handle);
-                    if (_vibranceInfo.neverChangeResolution == false && 
-                        applicationSetting.IsResolutionChangeNeeded && 
+                    var screen = Screen.FromHandle(e.Handle);
+                    if (_vibranceInfo.neverChangeResolution == false &&
+                        applicationSetting.IsResolutionChangeNeeded &&
                         IsResolutionChangeNeeded(screen, applicationSetting.ResolutionSettings) &&
                         _windowsResolutionSettings.ContainsKey(screen.DeviceName) &&
                         _windowsResolutionSettings[screen.DeviceName].Item2.Contains(applicationSetting.ResolutionSettings))
@@ -126,29 +121,23 @@ namespace vibrance.GUI.AMD
 
                     _amdAdapter.SetSaturationOnAllDisplays(_vibranceInfo.userVibranceSettingDefault);
                     if (_vibranceInfo.affectPrimaryMonitorOnly)
-                    {
                         _amdAdapter.SetSaturationOnDisplay(applicationSetting.IngameLevel, screen.DeviceName);
-                    }
                     else
-                    {
                         _amdAdapter.SetSaturationOnAllDisplays(applicationSetting.IngameLevel);
-                    }
                 }
                 else
                 {
-                    IntPtr processHandle = e.Handle;
+                    var processHandle = e.Handle;
                     if (GetForegroundWindow() != processHandle)
                         return;
 
                     //test if a resolution change is needed
-                    Screen screen = Screen.FromHandle(processHandle);
-                    if (_vibranceInfo.neverChangeResolution == false && 
-                        _gameScreen != null && _gameScreen.Equals(screen) && 
+                    var screen = Screen.FromHandle(processHandle);
+                    if (_vibranceInfo.neverChangeResolution == false &&
+                        _gameScreen != null && _gameScreen.Equals(screen) &&
                         _windowsResolutionSettings.ContainsKey(screen.DeviceName) &&
                         IsResolutionChangeNeeded(screen, _windowsResolutionSettings[screen.DeviceName].Item1))
-                    {
                         PerformResolutionChange(screen, _windowsResolutionSettings[screen.DeviceName].Item1);
-                    }
 
                     _amdAdapter.SetSaturationOnAllDisplays(_vibranceInfo.userVibranceSettingDefault);
                 }
@@ -158,10 +147,7 @@ namespace vibrance.GUI.AMD
         private static bool IsResolutionChangeNeeded(Screen screen, ResolutionModeWrapper resolutionSettings)
         {
             Devmode mode;
-            if (resolutionSettings != null && ResolutionHelper.GetCurrentResolutionSettings(out mode, screen.DeviceName) && !resolutionSettings.Equals(mode))
-            {
-                return true;
-            }
+            if (resolutionSettings != null && ResolutionHelper.GetCurrentResolutionSettings(out mode, screen.DeviceName) && !resolutionSettings.Equals(mode)) return true;
             return false;
         }
 

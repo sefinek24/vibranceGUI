@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Runtime.InteropServices;
 
 namespace vibrance.GUI.AMD.vendor.adl64
@@ -41,6 +41,5 @@ namespace vibrance.GUI.AMD.vendor.adl64
 
         [DllImport(AtiadlFileName, CallingConvention = CallingConvention.Cdecl)]
         public static extern int ADL_Display_Color_Get(int a, int b, int c, ref int d, ref int e, ref int f, ref int g, ref int h);
-
     }
 }

@@ -1,5 +1,3 @@
-﻿
-
 /*******************************************************************************
  Copyright(c) 2008 - 2009 Advanced Micro Devices, Inc. All Rights Reserved.
  Copyright (c) 2002 - 2006  ATI Technologies Inc. All Rights Reserved.
@@ -24,6 +22,22 @@ namespace vibrance.GUI.AMD.vendor.adl32
 {
     public static class Adl
     {
+        public const int AdlDisplayColorBrightness = 1 << 0;
+        public const int AdlDisplayColorContrast = 1 << 1;
+        public const int AdlDisplayColorSaturation = 1 << 2;
+        public const int AdlDisplayColorHue = 1 << 3;
+        public const int AdlDisplayColorTemperature = 1 << 4;
+
+        public const int AdlMaxPath = 256;
+        public const int AdlMaxAdapters = 40;
+        public const int AdlMaxDisplays = 40;
+        public const int AdlMaxDevicename = 32;
+        public const int AdlSuccess = 0;
+        public const int AdlFail = -1;
+        public const int AdlDriverOk = 0;
+        public const int AdlMaxGlsyncPorts = 8;
+        public const int AdlMaxGlsyncPortLeds = 8;
+        public const int AdlMaxNumDisplaymodes = 1024;
         private static Delegates.AdlMainControlCreate _adlMainControlCreate;
         private static Delegates.AdlMainControlDestroy _adlMainControlDestroy;
         private static Delegates.AdlAdapterNumberOfAdaptersGet _adlAdapterNumberOfAdaptersGet;
@@ -41,39 +55,8 @@ namespace vibrance.GUI.AMD.vendor.adl32
         private static bool _adlMainControlCreateCheck;
         private static bool _adlDisplayColorGetCheck;
 
-        public const int AdlDisplayColorBrightness = (1 << 0);
-        public const int AdlDisplayColorContrast = (1 << 1);
-        public const int AdlDisplayColorSaturation = (1 << 2);
-        public const int AdlDisplayColorHue = (1 << 3);
-        public const int AdlDisplayColorTemperature = (1 << 4);
-
-        public const int AdlMaxPath = 256;
-        public const int AdlMaxAdapters = 40;
-        public const int AdlMaxDisplays = 40;
-        public const int AdlMaxDevicename = 32;
-        public const int AdlSuccess = 0;
-        public const int AdlFail = -1;
-        public const int AdlDriverOk = 0;
-        public const int AdlMaxGlsyncPorts = 8;
-        public const int AdlMaxGlsyncPortLeds = 8;
-        public const int AdlMaxNumDisplaymodes = 1024;
-
         public static Delegates.AdlMainMemoryAlloc AdlMainMemoryAlloc = ADL_Main_Memory_Alloc_;
-        
-        private static IntPtr ADL_Main_Memory_Alloc_(int size)
-        {
-            IntPtr result = Marshal.AllocCoTaskMem(size);
-            return result;
-        }
-        
-        public static void ADL_Main_Memory_Free(IntPtr buffer)
-        {
-            if (IntPtr.Zero != buffer)
-            {
-                Marshal.FreeCoTaskMem(buffer);
-            }
-        }
-        
+
         public static Delegates.AdlMainControlCreate AdlMainControlCreate
         {
             get
@@ -81,15 +64,13 @@ namespace vibrance.GUI.AMD.vendor.adl32
                 if (!_adlMainControlCreateCheck && null == _adlMainControlCreate)
                 {
                     _adlMainControlCreateCheck = true;
-                    if (AdlCheckLibrary.IsFunctionValid("ADL_Main_Control_Create"))
-                    {
-                        _adlMainControlCreate = AdlImport.ADL_Main_Control_Create;
-                    }
+                    if (AdlCheckLibrary.IsFunctionValid("ADL_Main_Control_Create")) _adlMainControlCreate = AdlImport.ADL_Main_Control_Create;
                 }
+
                 return _adlMainControlCreate;
             }
         }
-        
+
         public static Delegates.AdlMainControlDestroy AdlMainControlDestroy
         {
             get
@@ -97,11 +78,9 @@ namespace vibrance.GUI.AMD.vendor.adl32
                 if (!_adlMainControlDestroyCheck && null == _adlMainControlDestroy)
                 {
                     _adlMainControlDestroyCheck = true;
-                    if (AdlCheckLibrary.IsFunctionValid("ADL_Main_Control_Destroy"))
-                    {
-                        _adlMainControlDestroy = AdlImport.ADL_Main_Control_Destroy;
-                    }
+                    if (AdlCheckLibrary.IsFunctionValid("ADL_Main_Control_Destroy")) _adlMainControlDestroy = AdlImport.ADL_Main_Control_Destroy;
                 }
+
                 return _adlMainControlDestroy;
             }
         }
@@ -113,15 +92,13 @@ namespace vibrance.GUI.AMD.vendor.adl32
                 if (!_adlAdapterNumberOfAdaptersGetCheck && null == _adlAdapterNumberOfAdaptersGet)
                 {
                     _adlAdapterNumberOfAdaptersGetCheck = true;
-                    if (AdlCheckLibrary.IsFunctionValid("ADL_Adapter_NumberOfAdapters_Get"))
-                    {
-                        _adlAdapterNumberOfAdaptersGet = AdlImport.ADL_Adapter_NumberOfAdapters_Get;
-                    }
+                    if (AdlCheckLibrary.IsFunctionValid("ADL_Adapter_NumberOfAdapters_Get")) _adlAdapterNumberOfAdaptersGet = AdlImport.ADL_Adapter_NumberOfAdapters_Get;
                 }
+
                 return _adlAdapterNumberOfAdaptersGet;
             }
         }
-        
+
         public static Delegates.AdlAdapterAdapterInfoGet AdlAdapterAdapterInfoGet
         {
             get
@@ -129,15 +106,13 @@ namespace vibrance.GUI.AMD.vendor.adl32
                 if (!_adlAdapterAdapterInfoGetCheck && null == _adlAdapterAdapterInfoGet)
                 {
                     _adlAdapterAdapterInfoGetCheck = true;
-                    if (AdlCheckLibrary.IsFunctionValid("ADL_Adapter_AdapterInfo_Get"))
-                    {
-                        _adlAdapterAdapterInfoGet = AdlImport.ADL_Adapter_AdapterInfo_Get;
-                    }
+                    if (AdlCheckLibrary.IsFunctionValid("ADL_Adapter_AdapterInfo_Get")) _adlAdapterAdapterInfoGet = AdlImport.ADL_Adapter_AdapterInfo_Get;
                 }
+
                 return _adlAdapterAdapterInfoGet;
             }
         }
-        
+
         public static Delegates.AdlAdapterActiveGet AdlAdapterActiveGet
         {
             get
@@ -145,11 +120,9 @@ namespace vibrance.GUI.AMD.vendor.adl32
                 if (!_adlAdapterActiveGetCheck && null == _adlAdapterActiveGet)
                 {
                     _adlAdapterActiveGetCheck = true;
-                    if (AdlCheckLibrary.IsFunctionValid("ADL_Adapter_Active_Get"))
-                    {
-                        _adlAdapterActiveGet = AdlImport.ADL_Adapter_Active_Get;
-                    }
+                    if (AdlCheckLibrary.IsFunctionValid("ADL_Adapter_Active_Get")) _adlAdapterActiveGet = AdlImport.ADL_Adapter_Active_Get;
                 }
+
                 return _adlAdapterActiveGet;
             }
         }
@@ -161,15 +134,13 @@ namespace vibrance.GUI.AMD.vendor.adl32
                 if (!_adlDisplayDisplayInfoGetCheck && null == _adlDisplayDisplayInfoGet)
                 {
                     _adlDisplayDisplayInfoGetCheck = true;
-                    if (AdlCheckLibrary.IsFunctionValid("ADL_Display_DisplayInfo_Get"))
-                    {
-                        _adlDisplayDisplayInfoGet = AdlImport.ADL_Display_DisplayInfo_Get;
-                    }
+                    if (AdlCheckLibrary.IsFunctionValid("ADL_Display_DisplayInfo_Get")) _adlDisplayDisplayInfoGet = AdlImport.ADL_Display_DisplayInfo_Get;
                 }
+
                 return _adlDisplayDisplayInfoGet;
             }
         }
-        
+
         public static Delegates.AdlDisplayColorSet AdlDisplayColorSet
         {
             get
@@ -177,11 +148,9 @@ namespace vibrance.GUI.AMD.vendor.adl32
                 if (!_adlDisplayColorSetCheck && null == _adlDisplayColorSet)
                 {
                     _adlDisplayColorSetCheck = true;
-                    if (AdlCheckLibrary.IsFunctionValid("ADL_Display_Color_Set"))
-                    {
-                        _adlDisplayColorSet = AdlImport.ADL_Display_Color_Set;
-                    }
+                    if (AdlCheckLibrary.IsFunctionValid("ADL_Display_Color_Set")) _adlDisplayColorSet = AdlImport.ADL_Display_Color_Set;
                 }
+
                 return _adlDisplayColorSet;
             }
         }
@@ -193,13 +162,22 @@ namespace vibrance.GUI.AMD.vendor.adl32
                 if (!_adlDisplayColorGetCheck && null == _adlDisplayColorGet)
                 {
                     _adlDisplayColorGetCheck = true;
-                    if (AdlCheckLibrary.IsFunctionValid("ADL_Display_Color_Get"))
-                    {
-                        _adlDisplayColorGet = AdlImport.ADL_Display_Color_Get;
-                    }
+                    if (AdlCheckLibrary.IsFunctionValid("ADL_Display_Color_Get")) _adlDisplayColorGet = AdlImport.ADL_Display_Color_Get;
                 }
+
                 return _adlDisplayColorGet;
             }
+        }
+
+        private static IntPtr ADL_Main_Memory_Alloc_(int size)
+        {
+            var result = Marshal.AllocCoTaskMem(size);
+            return result;
+        }
+
+        public static void ADL_Main_Memory_Free(IntPtr buffer)
+        {
+            if (IntPtr.Zero != buffer) Marshal.FreeCoTaskMem(buffer);
         }
     }
 }
