@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 
 namespace vibrance.GUI.AMD.vendor.adl32
 {

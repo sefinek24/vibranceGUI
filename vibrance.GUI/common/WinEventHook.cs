@@ -8,9 +8,9 @@ namespace vibrance.GUI.common
     internal class WinEventHook
     {
         private static WinEventHook _instance;
+        private readonly WinEventDelegate _procDelegate = WinEventProc;
 
         private readonly IntPtr _winEventHookHandle;
-        private readonly WinEventDelegate _procDelegate = WinEventProc;
 
         private WinEventHook()
         {

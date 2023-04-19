@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -14,9 +14,9 @@ namespace vibrance.GUI.AMD
     {
         private static Screen _gameScreen;
         private readonly IAmdAdapter _amdAdapter;
+        private readonly WinEventHook _hook;
         private readonly Dictionary<string, Tuple<ResolutionModeWrapper, List<ResolutionModeWrapper>>> _windowsResolutionSettings;
         private List<ApplicationSetting> _applicationSettings;
-        private readonly WinEventHook _hook;
         private VibranceInfo _vibranceInfo;
 
         public AmdDynamicVibranceProxy(IAmdAdapter amdAdapter, List<ApplicationSetting> applicationSettings, Dictionary<string, Tuple<ResolutionModeWrapper, List<ResolutionModeWrapper>>> windowsResolutionSettings)
