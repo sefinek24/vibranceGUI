@@ -98,8 +98,10 @@ namespace vibrance.GUI.common
             if (!(e.UserState is ProcessExplorerEntry)) return;
             var processEntry = (ProcessExplorerEntry)e.UserState;
             iconList.Images.Add(processEntry.Icon);
-            var listItem = new ListViewItem(processEntry.ProcessName, iconList.Images.Count - 1);
-            listItem.Tag = processEntry;
+            var listItem = new ListViewItem(processEntry.ProcessName, iconList.Images.Count - 1)
+            {
+                Tag = processEntry
+            };
             listItem.SubItems.Add(processEntry.Path);
             listView.Items.Add(listItem);
         }

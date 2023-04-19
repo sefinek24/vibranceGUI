@@ -35,19 +35,15 @@ namespace vibrance.GUI.common
 
             //if the object is of type DEVMODE, it corresponding ResolutionModeWrapper 
             //will be determined and the second check will always pass
-            if (obj is Devmode) that = new ResolutionModeWrapper((Devmode)obj);
-            if (obj is ResolutionModeWrapper || that != null)
-            {
-                that = that == null ? obj as ResolutionModeWrapper : that;
-                if (DmPelsWidth == that.DmPelsWidth &&
-                    DmPelsHeight == that.DmPelsHeight &&
-                    DmBitsPerPel == that.DmBitsPerPel &&
-                    DmDisplayFrequency == that.DmDisplayFrequency &&
-                    DmDisplayFixedOutput == that.DmDisplayFixedOutput)
-                    return true;
-            }
+            if (obj is Devmode devmode) that = new ResolutionModeWrapper(devmode);
+            if (!(obj is ResolutionModeWrapper) && that == null) return false;
 
-            return false;
+            that = that ?? (ResolutionModeWrapper)obj;
+            return DmPelsWidth == that.DmPelsWidth &&
+                   DmPelsHeight == that.DmPelsHeight &&
+                   DmBitsPerPel == that.DmBitsPerPel &&
+                   DmDisplayFrequency == that.DmDisplayFrequency &&
+                   DmDisplayFixedOutput == that.DmDisplayFixedOutput;
         }
 
         protected bool Equals(ResolutionModeWrapper other)

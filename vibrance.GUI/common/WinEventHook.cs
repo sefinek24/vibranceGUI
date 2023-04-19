@@ -58,8 +58,7 @@ namespace vibrance.GUI.common
 
         private static void WinEventProc(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
         {
-            uint processId;
-            GetWindowThreadProcessId(hwnd, out processId);
+            GetWindowThreadProcessId(hwnd, out var processId);
             var windowTextLength = GetWindowTextLength(hwnd);
             var sb = new StringBuilder(windowTextLength + 1);
             GetWindowTextA(hwnd, sb, sb.Capacity);
@@ -91,8 +90,7 @@ namespace vibrance.GUI.common
 
         protected virtual void DispatchWinEventHookEvent(WinEventHookEventArgs e)
         {
-            var handler = WinEventHookHandler;
-            if (handler != null) handler(this, e);
+            WinEventHookHandler?.Invoke(this, e);
         }
 
         private delegate void WinEventDelegate(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime);

@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.InteropServices;
 using vibrance.GUI.AMD.vendor.adl64;
 
@@ -19,90 +20,75 @@ namespace vibrance.GUI.AMD.vendor
 
             Adl.AdlMainControlCreate(Adl.AdlMainMemoryAlloc, 1);
 
-            if (Adl.AdlAdapterNumberOfAdaptersGet != null) Adl.AdlAdapterNumberOfAdaptersGet(ref numberOfAdapters);
-
+            if (Adl.AdlAdapterNumberOfAdaptersGet != null) _ = Adl.AdlAdapterNumberOfAdaptersGet(ref numberOfAdapters);
             Adl.AdlMainControlCreate(Adl.AdlMainMemoryAlloc, 1);
 
-            if (numberOfAdapters > 0)
+            if (numberOfAdapters <= 0) return;
+            var osAdapterInfoData = new AdlAdapterInfoArray();
+
+            if (Adl.AdlAdapterAdapterInfoGet == null) return;
+            var size = Marshal.SizeOf(osAdapterInfoData);
+            var adapterBuffer = Marshal.AllocCoTaskMem(size);
+            Marshal.StructureToPtr(osAdapterInfoData, adapterBuffer, false);
+
+            var adlRet = Adl.AdlAdapterAdapterInfoGet(adapterBuffer, size);
+            if (adlRet == Adl.AdlSuccess)
             {
-                var osAdapterInfoData = new AdlAdapterInfoArray();
+                osAdapterInfoData = (AdlAdapterInfoArray)Marshal.PtrToStructure(adapterBuffer, osAdapterInfoData.GetType());
+                var isActive = 0;
 
-                if (Adl.AdlAdapterAdapterInfoGet != null)
+                for (var i = 0; i < numberOfAdapters; i++)
                 {
-                    var size = Marshal.SizeOf(osAdapterInfoData);
-                    var adapterBuffer = Marshal.AllocCoTaskMem(size);
-                    Marshal.StructureToPtr(osAdapterInfoData, adapterBuffer, false);
+                    var adlAdapterInfo = osAdapterInfoData.ADLAdapterInfo[i];
 
-                    var adlRet = Adl.AdlAdapterAdapterInfoGet(adapterBuffer, size);
-                    if (adlRet == Adl.AdlSuccess)
+                    var adapterIndex = adlAdapterInfo.AdapterIndex;
+
+                    if (Adl.AdlAdapterActiveGet != null) adlRet = Adl.AdlAdapterActiveGet(adlAdapterInfo.AdapterIndex, ref isActive);
+
+                    if (Adl.AdlSuccess != adlRet) continue;
+                    var oneDisplayInfo = new AdlDisplayInfo();
+
+                    if (Adl.AdlDisplayDisplayInfoGet == null) continue;
+                    var numberOfDisplays = 0;
+                    adlRet = Adl.AdlDisplayDisplayInfoGet(adlAdapterInfo.AdapterIndex, ref numberOfDisplays, out var displayBuffer, 1);
+                    if (Adl.AdlSuccess == adlRet)
                     {
-                        osAdapterInfoData = (AdlAdapterInfoArray)Marshal.PtrToStructure(adapterBuffer, osAdapterInfoData.GetType());
-                        var isActive = 0;
-
-                        for (var i = 0; i < numberOfAdapters; i++)
+                        var displayInfoData = new List<AdlDisplayInfo>();
+                        for (var j = 0; j < numberOfDisplays; j++)
                         {
-                            var adlAdapterInfo = osAdapterInfoData.ADLAdapterInfo[i];
+                            oneDisplayInfo = (AdlDisplayInfo)Marshal.PtrToStructure(new IntPtr(displayBuffer.ToInt64() + j * Marshal.SizeOf(oneDisplayInfo)), oneDisplayInfo.GetType());
+                            displayInfoData.Add(oneDisplayInfo);
+                        }
 
-                            var adapterIndex = adlAdapterInfo.AdapterIndex;
+                        for (var j = 0; j < numberOfDisplays; j++)
+                        {
+                            var adlDisplayInfo = displayInfoData[j];
 
-                            if (Adl.AdlAdapterActiveGet != null) adlRet = Adl.AdlAdapterActiveGet(adlAdapterInfo.AdapterIndex, ref isActive);
+                            if (adlDisplayInfo.DisplayID.DisplayLogicalAdapterIndex == -1) continue;
 
-                            if (Adl.AdlSuccess == adlRet)
+                            displays.Add(new Display
                             {
-                                var oneDisplayInfo = new AdlDisplayInfo();
-
-                                if (Adl.AdlDisplayDisplayInfoGet != null)
-                                {
-                                    var displayBuffer = IntPtr.Zero;
-
-                                    var numberOfDisplays = 0;
-                                    adlRet = Adl.AdlDisplayDisplayInfoGet(adlAdapterInfo.AdapterIndex, ref numberOfDisplays, out displayBuffer, 1);
-                                    if (Adl.AdlSuccess == adlRet)
-                                    {
-                                        var displayInfoData = new List<AdlDisplayInfo>();
-                                        for (var j = 0; j < numberOfDisplays; j++)
-                                        {
-                                            oneDisplayInfo = (AdlDisplayInfo)Marshal.PtrToStructure(new IntPtr(displayBuffer.ToInt64() + j * Marshal.SizeOf(oneDisplayInfo)), oneDisplayInfo.GetType());
-                                            displayInfoData.Add(oneDisplayInfo);
-                                        }
-
-                                        for (var j = 0; j < numberOfDisplays; j++)
-                                        {
-                                            var adlDisplayInfo = displayInfoData[j];
-
-                                            if (adlDisplayInfo.DisplayID.DisplayLogicalAdapterIndex == -1) continue;
-
-                                            displays.Add(new Display
-                                            {
-                                                DisplayInfo = adlDisplayInfo,
-                                                AdapterInfo = adlAdapterInfo,
-                                                Index = adapterIndex
-                                            });
-                                        }
-                                    }
-
-                                    disposer.DisplayBufferList.Add(displayBuffer);
-                                }
-                            }
+                                DisplayInfo = adlDisplayInfo,
+                                AdapterInfo = adlAdapterInfo,
+                                Index = adapterIndex
+                            });
                         }
                     }
 
-                    disposer.AdapterBuffer = adapterBuffer;
+                    disposer.DisplayBufferList.Add(displayBuffer);
                 }
             }
+
+            disposer.AdapterBuffer = adapterBuffer;
         }
 
         public bool IsAvailable()
         {
-            if (Adl.AdlMainControlCreate != null)
-                if (Adl.AdlSuccess == Adl.AdlMainControlCreate(Adl.AdlMainMemoryAlloc, 1))
-                {
-                    if (Adl.AdlMainControlDestroy != null) Adl.AdlMainControlDestroy();
+            if (Adl.AdlMainControlCreate == null) return false;
+            if (Adl.AdlSuccess != Adl.AdlMainControlCreate(Adl.AdlMainMemoryAlloc, 1)) return false;
+            if (Adl.AdlMainControlDestroy != null) _ = Adl.AdlMainControlDestroy();
 
-                    return true;
-                }
-
-            return false;
+            return true;
         }
 
         public void SetSaturationOnAllDisplays(int vibranceLevel)
@@ -156,13 +142,11 @@ namespace vibrance.GUI.AMD.vendor
 
             public void Dispose()
             {
-                foreach (var intPtr in DisplayBufferList)
-                    if (intPtr != IntPtr.Zero)
-                        Marshal.FreeCoTaskMem(intPtr);
+                foreach (var intPtr in DisplayBufferList.Where(intPtr => intPtr != IntPtr.Zero))
+                    Marshal.FreeCoTaskMem(intPtr);
 
                 if (AdapterBuffer != IntPtr.Zero) Marshal.FreeCoTaskMem(AdapterBuffer);
-
-                if (Adl.AdlMainControlDestroy != null) Adl.AdlMainControlDestroy();
+                if (Adl.AdlMainControlDestroy != null) _ = Adl.AdlMainControlDestroy();
             }
         }
     }

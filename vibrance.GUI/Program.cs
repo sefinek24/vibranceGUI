@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -28,8 +28,7 @@ namespace vibrance.GUI
         [STAThread]
         private static void Main(string[] args)
         {
-            var result = false;
-            var mutex = new Mutex(true, "vibranceGUI~Mutex", out result);
+            var mutex = new Mutex(true, "vibranceGUI~Mutex", out var result);
             if (!result)
             {
                 MessageBox.Show("You can run vibranceGUI only once at a time!", MessageBoxCaption, MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -43,51 +42,56 @@ namespace vibrance.GUI
             var adapter = GraphicsAdapterHelper.GetAdapter();
             Form vibranceGui = null;
 
-            if (adapter == GraphicsAdapter.Amd)
+            switch (adapter)
             {
-                Func<List<ApplicationSetting>, Dictionary<string, Tuple<ResolutionModeWrapper, List<ResolutionModeWrapper>>>, IVibranceProxy> getProxy = (x, y) =>
-                    new AmdDynamicVibranceProxy(Environment.Is64BitOperatingSystem
-                        ? new AmdAdapter64()
-                        : (IAmdAdapter)new AmdAdapter32(), x, y);
-                vibranceGui = new VibranceGUI(getProxy,
-                    100,
-                    0,
-                    300,
-                    100,
-                    x => x.ToString());
-            }
-            else if (adapter == GraphicsAdapter.Nvidia)
-            {
-                const string nvidiaAdapterName = "vibranceDLL.dll";
-                var resourceName = $"{typeof(Program).Namespace}.NVIDIA.{nvidiaAdapterName}";
-                CommonUtils.LoadUnmanagedLibraryFromResource(
-                    Assembly.GetExecutingAssembly(),
-                    resourceName,
-                    nvidiaAdapterName);
-                Marshal.PrelinkAll(typeof(NvidiaDynamicVibranceProxy));
+                case GraphicsAdapter.Amd:
+                {
+                    Func<List<ApplicationSetting>, Dictionary<string, Tuple<ResolutionModeWrapper, List<ResolutionModeWrapper>>>, IVibranceProxy> getProxy = (x, y) =>
+                        new AmdDynamicVibranceProxy(Environment.Is64BitOperatingSystem
+                            ? new AmdAdapter64()
+                            : (IAmdAdapter)new AmdAdapter32(), x, y);
+                    vibranceGui = new VibranceGUI(getProxy,
+                        100,
+                        0,
+                        300,
+                        100,
+                        x => x.ToString());
+                    break;
+                }
+                case GraphicsAdapter.Nvidia:
+                {
+                    const string nvidiaAdapterName = "vibranceDLL.dll";
+                    var resourceName = $"{typeof(Program).Namespace}.NVIDIA.{nvidiaAdapterName}";
+                    CommonUtils.LoadUnmanagedLibraryFromResource(
+                        Assembly.GetExecutingAssembly(),
+                        resourceName,
+                        nvidiaAdapterName);
+                    Marshal.PrelinkAll(typeof(NvidiaDynamicVibranceProxy));
 
-                vibranceGui = new VibranceGUI(
-                    (x, y) => new NvidiaDynamicVibranceProxy(x, y),
-                    NvidiaDynamicVibranceProxy.NvapiDefaultLevel,
-                    NvidiaDynamicVibranceProxy.NvapiDefaultLevel,
-                    NvidiaDynamicVibranceProxy.NvapiMaxLevel,
-                    NvidiaDynamicVibranceProxy.NvapiDefaultLevel,
-                    x => NvidiaVibranceValueWrapper.Find(x).Percentage);
-            }
-            else if (adapter == GraphicsAdapter.Unknown)
-            {
-                var errorMessage = new Win32Exception(Marshal.GetLastWin32Error()).Message;
-                if (MessageBox.Show(ErrorGraphicsAdapterUnknown + errorMessage,
-                        MessageBoxCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
-                    Process.Start("https://twitter.com/juvlarN");
-                return;
-            }
-            else if (adapter == GraphicsAdapter.Ambiguous)
-            {
-                if (MessageBox.Show(ErrorGraphicsAdapterAmbiguous, MessageBoxCaption, MessageBoxButtons.YesNo,
-                        MessageBoxIcon.Error) == DialogResult.Yes)
-                    Process.Start("http://www.guru3d.com/files-details/display-driver-uninstaller-download.html");
-                return;
+                    vibranceGui = new VibranceGUI(
+                        (x, y) => new NvidiaDynamicVibranceProxy(x, y),
+                        NvidiaDynamicVibranceProxy.NvapiDefaultLevel,
+                        NvidiaDynamicVibranceProxy.NvapiDefaultLevel,
+                        NvidiaDynamicVibranceProxy.NvapiMaxLevel,
+                        NvidiaDynamicVibranceProxy.NvapiDefaultLevel,
+                        x => NvidiaVibranceValueWrapper.Find(x).Percentage);
+                    break;
+                }
+                case GraphicsAdapter.Unknown:
+                {
+                    var errorMessage = new Win32Exception(Marshal.GetLastWin32Error()).Message;
+                    if (MessageBox.Show(ErrorGraphicsAdapterUnknown + errorMessage,
+                            MessageBoxCaption, MessageBoxButtons.YesNo, MessageBoxIcon.Error) == DialogResult.Yes)
+                        Process.Start("https://twitter.com/juvlarN");
+                    return;
+                }
+                case GraphicsAdapter.Ambiguous:
+                {
+                    if (MessageBox.Show(ErrorGraphicsAdapterAmbiguous, MessageBoxCaption, MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Error) == DialogResult.Yes)
+                        Process.Start("http://www.guru3d.com/files-details/display-driver-uninstaller-download.html");
+                    return;
+                }
             }
 
             if (args.Contains("-minimized"))
@@ -96,7 +100,7 @@ namespace vibrance.GUI
                 ((VibranceGUI)vibranceGui).SetAllowVisible(false);
             }
 
-            vibranceGui.Text += string.Format(" ({0}, {1})", adapter.ToString().ToUpper(), Application.ProductVersion);
+            vibranceGui.Text += $" ({adapter.ToString().ToUpper()}, {Application.ProductVersion})";
             Application.Run(vibranceGui);
 
             GC.KeepAlive(mutex);
